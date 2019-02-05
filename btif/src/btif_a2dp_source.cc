@@ -499,8 +499,9 @@ static void btif_a2dp_source_end_session_delayed(
     const RawAddress& peer_address) {
   LOG_INFO(LOG_TAG, "%s: peer_address=%s", __func__,
            peer_address.ToString().c_str());
-  if (btif_a2dp_source_cb.State() != BtifA2dpSource::kStateRunning) {
-    LOG_ERROR(LOG_TAG, "%s: A2DP Source media task is not running", __func__);
+  if ((btif_a2dp_source_cb.State() != BtifA2dpSource::kStateRunning) ||
+      (btif_a2dp_source_cb.State() == BtifA2dpSource::kStateShuttingDown)) {
+  LOG_ERROR(LOG_TAG, "%s: A2DP Source media task is not running", __func__);
     return;
   }
   btif_av_stream_stop(peer_address);
